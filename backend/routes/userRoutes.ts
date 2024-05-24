@@ -1,6 +1,12 @@
 import express from "express";
 
 // Middlewares
+import {
+  checkValidations,
+  createUserValidation,
+} from "../middlewares/validationsMiddlewares";
+
+import { protectToken } from "../middlewares/authMiddlewares";
 
 // Controllers
 import {
@@ -15,11 +21,14 @@ const router = express.Router();
 
 // Routes
 
-router.post("/", createUser);
+router.post("/", createUserValidation, checkValidations, createUser);
+
+// Apply protectToken middleware
+//router.use(protectToken);
 router.get("/", getAllUsers);
 router.get("/:id", getUser);
 router.put("/:id", updateUser);
-router.delete("/:id", deleteUser);    
+router.delete("/:id", deleteUser);
 
 // swagger docs
 
@@ -53,7 +62,7 @@ router.delete("/:id", deleteUser);
  *            properties:
  *              firstName:
  *                type: string
- *              lastName: 
+ *              lastName:
  *                type: string
  *              usuario:
  *                type: string
