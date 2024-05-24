@@ -1,4 +1,3 @@
-import express from 'express';
 import { db } from "./util/database";
 import { app } from "./app";
 import swaggerDocs from "./config/swagger";
