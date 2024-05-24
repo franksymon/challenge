@@ -8,13 +8,32 @@ const options = {
         info: {
             title: "Challenge",
             version: "1.0.0",
-            description: "Challenge API Nerdcom",
+            description: "This is a Challenge API they are created by Nerdcom",
         },
         servers: [
             {
                 url: "http://localhost:8080",
             },
         ],
+        // securityDefinitions: {
+        //     Bearer: {
+        //         type: "apiKey",
+        //         name: "Authorization",
+        //         in: "header",
+        //     },
+        // },
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: "http",
+                    scheme: "bearer",
+                    bearerFormat: "JWT",
+                },
+            },
+            security: {
+                bearerAuth: ['access-token'],
+            },
+        },
     },
     apis: ["./routes/*.ts"],
 };
