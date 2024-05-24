@@ -17,11 +17,13 @@ app.use(express.json());
 // routes
 import userRoutes from "./routes/userRoutes";
 import noteRoutes from "./routes/noteRoutes";
+import authRoutes from "./routes/authRoutes";
 
 
 // Endpoints
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/notes", noteRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 // Health check
 app.get("/healthcheck", (req, res) => {
