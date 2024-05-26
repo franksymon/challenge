@@ -40,6 +40,11 @@ export const createNoteValidation = [
         .withMessage('Body is required')
         .isLength({ min: 3 })
         .withMessage('Body must be at least 3 characters long'),
+    body('date')
+        .exists()
+        .withMessage('Date is required')
+        .isISO8601()
+        .withMessage('Invalid date format'),
 ];
 
 

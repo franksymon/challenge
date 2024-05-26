@@ -12,6 +12,8 @@ import {protectToken} from "../middlewares/authMiddlewares";
 import {
     getAllNotes,
     getNote,
+    searchNote,
+    fromDate,
     createNote,
     updateNote,
     deleteNote,
@@ -28,6 +30,8 @@ const router = express.Router();
 router.post("/", createNoteValidation, checkValidations, createNote);  
 router.get("/", getAllNotes);
 router.get("/:id", getNote);
+router.get("/search/:search", searchNote);
+router.get("/fromDate/:fromDate/toDate/:toDate", fromDate);
 router.put("/:id", updateNote);
 router.delete("/:id", deleteNote);
 
@@ -64,6 +68,10 @@ router.delete("/:id", deleteNote);
  *                type: string
  *              body: 
  *                type: string
+ *              date:
+ *                type: string
+ *                format: date
+ *                example: "2022-01-01"
  *     responses:
  *       200:
  *         description: The created note.
@@ -73,6 +81,53 @@ router.delete("/:id", deleteNote);
  *               $ref: '#/components/schemas/note'
  *       500:
  *         description: Some server error
+ * /api/v1/notes/search/{search}:
+ *   get:
+ *     summary: Get the note of search by title and body
+ *     tags: [Notes]
+ *     parameters:
+ *       - in: path
+ *         name: search
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: search by title and body
+ *     responses:
+ *       200:
+ *         description: The note response by id
+ *         contens:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/note'
+ *       404:
+ *         description: The note was not found
+ * /api/v1/notes/fromDate/{fromDate}/toDate/{toDate}:
+ *   get:
+ *     summary: get notes from this date
+ *     tags: [Notes]
+ *     parameters:
+ *       - in: path
+ *         name: fromDate
+ *         schema:
+ *           type: date
+ *           format: date
+ *           example: "2022-01-01"
+ *         description: get notes from this date
+ *       - in: path
+ *         name: toDate
+ *         schema:
+ *           type: date
+ *           format: date
+ *           example: "2024-12-31"
+ *     responses:
+ *       200:
+ *         description: The note response by id
+ *         contens:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/note'
+ *       404:
+ *         description: The note was not found
  * /api/v1/notes/{id}:
  *   get:
  *     summary: Get the note by id
