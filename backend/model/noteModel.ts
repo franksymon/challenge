@@ -5,12 +5,14 @@ export interface NoteInterface {
     id?: number;
     title: string;
     body: string;
+    date: Date;
 }
 
 export class Note extends Model<NoteInterface> implements NoteInterface {
     public id!: number;
     public title!: string;
     public body!: string;
+    public date!: Date;
 }
 
 Note.init(
@@ -26,7 +28,11 @@ Note.init(
         body: {
             type: DataTypes.TEXT(),
             allowNull: false,
-        }
+        },
+        date: {
+            type: DataTypes.DATE(),
+            allowNull: false,
+        },
     },
     {
         sequelize: db,

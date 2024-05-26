@@ -7,6 +7,7 @@ import { GlobalEnumStatus } from '../util/globalEnum';
 // Util
 import { AppError } from '../util/appError';
 import { catchAsync } from '../util/catchAsync';
+import { Op } from 'sequelize';
 
 
 export const getAllNotes = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -40,11 +41,59 @@ export const getNote = catchAsync(async (req: Request, res: Response, next: Next
   });
 
 
+export const searchNote = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const { search } = req.params;
+    const notes = await Note.findAll({
+      where: {
+        [Op.or]: [
+          { title: { [Op.like]: `%${search}%` } },
+          { body: { [Op.like]: `%${search}%` } },
+        ],
+      },
+      attributes: ['id', 'title', 'body', 'date'],
+    });
+    res.status(GlobalEnumStatus.OK).json({
+      status: 'success',
+      results: notes.length,
+      data: {
+        notes,
+      },
+    });
+})
+
+
+export const fromDate = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    console.log('entro',req.params);
+    const { toDate, fromDate } = req.params;
+
+    if (!fromDate || !toDate) {
+      return next(new AppError('Missing parameters', GlobalEnumStatus.BAD_REQUEST));
+    }
+
+    const notes = await Note.findAll({
+      where: {
+        date: {
+          [Op.between]: [fromDate, toDate],
+        },
+      },
+      attributes: ['id', 'title', 'body', 'date'],
+    });
+    res.status(GlobalEnumStatus.OK).json({
+      status: 'success',
+      results: notes.length,
+      data: {
+        notes,
+      },
+    });
+})
+
+
 export const createNote = catchAsync(async (req: Request, res: Response, next: NextFunction) => {       
-    const { title, body } = req.body;
+    const { title, body, date } = req.body;
     const newNote = await Note.create({
       title,
       body,
+      date,
     });
     res.status(GlobalEnumStatus.CREATED).json({
       status: 'success',
