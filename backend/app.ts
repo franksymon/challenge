@@ -20,10 +20,13 @@ import noteRoutes from "./routes/noteRoutes";
 import authRoutes from "./routes/authRoutes";
 
 
+// Prefix for API endpoints
+const apiPrefix = "/api/v1";
+
 // Endpoints
-app.use("/api/v1/users", userRoutes);
-app.use("/api/v1/notes", noteRoutes);
-app.use("/api/v1/auth", authRoutes);
+app.use(`${apiPrefix}/users`, userRoutes);
+app.use(`${apiPrefix}/notes`, noteRoutes);
+app.use(`${apiPrefix}/auth`, authRoutes);
 
 // Health check
 app.get("/healthcheck", (req, res) => {
