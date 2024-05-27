@@ -21,6 +21,7 @@ describe('Note Model Tests', () => {
         const testNote : Partial<NoteInterface> = {
             title: 'title',
             body: 'body',
+            date: new Date(),
         };
 
         createNote = await Note.create(testNote);
