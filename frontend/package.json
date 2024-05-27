@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --port=4000",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "vite --port=4000"
   },
   "dependencies": {
     "install": "^0.13.0",

@@ -29,7 +29,7 @@ app.use(`${apiPrefix}/notes`, noteRoutes);
 app.use(`${apiPrefix}/auth`, authRoutes);
 
 // Health check
-app.get("/healthcheck", (req, res) => {
+app.get(`${apiPrefix}/healthcheck`, (req, res) => {
   res.send("¡Okay!");
 });
 
