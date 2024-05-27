@@ -9,8 +9,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "test": "npm run test --workspace=backend",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "install-all": "npm  install && (cd backend && npm install) && (cd frontend && npm install)",
+    "start": "concurrently \"cd backend && npm run start\" \"cd frontend && npm run start\""
   },
   "author": "",
   "license": "ISC",
