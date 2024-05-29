@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import '../style/login.css'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); 
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
@@ -22,8 +23,7 @@ function Login() {
         // Procesa la respuesta exitosa aquí
         const data = await response.json();
         console.log('Usuario autenticado:', data);
-        return <Navigate to="/note" />;
-        //<Link to="/note">   </Link>
+        navigate('/note');
       } else {
         // Maneja errores de autenticación
         console.error('Error al iniciar sesión');
@@ -55,8 +55,9 @@ function Login() {
       
 
       <div className='wrapper-btn1'>
-        <Link to="/signup">Registrarse</Link>
-        <Link to="/reset-password">Res. contraseña</Link>
+        <Link className='btn1' to="/signup">singup   </Link>
+        <span>'     '</span>
+        <Link className='btn1' to="/reset-password">   Reset</Link>
       </div>
    
     </form>

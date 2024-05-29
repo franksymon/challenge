@@ -34,12 +34,12 @@ export const loginUser = catchAsync(async (req: Request, res: Response, next: Ne
 
 
 export const updatePassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params;
+    const { userid } = req.params;
     const { password } = req.body;
     const salt =  genSaltSync(12);
     const hashedPassword = hashSync(password, salt);
     
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(userid);
     if (!user) {
       return next(new AppError('User not found', GlobalEnumStatus.NOT_FOUND));
     } else {
