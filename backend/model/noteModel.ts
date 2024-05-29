@@ -5,14 +5,14 @@ export interface NoteInterface {
     id?: number;
     title: string;
     body: string;
-    date: Date;
+    date: string;
 }
 
 export class Note extends Model<NoteInterface> implements NoteInterface {
     public id!: number;
     public title!: string;
     public body!: string;
-    public date!: Date;
+    public date!: string;
 }
 
 Note.init(
@@ -30,7 +30,7 @@ Note.init(
             allowNull: false,
         },
         date: {
-            type: DataTypes.DATE(),
+            type: DataTypes.STRING(),
             allowNull: false,
         },
     },
