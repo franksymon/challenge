@@ -8,10 +8,13 @@ const Note = () => {
     id?: number;
     title: string;
     body: string;
-    date?: Date;
+    date?: string;
   }
+
+  const [idSelected, setIdSelected] = useState<number | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
   const [newNote, setNewNote] = useState({
+    id: null,
     title: '',
     body: '',
     date:'',
@@ -21,8 +24,16 @@ const Note = () => {
 
   useEffect(() => {
     getAllNotes();
-   // handleCreate();
   }, []);
+
+  useEffect(() => {
+    if (idSelected) {
+      const note = notes.find((note) => note.id === idSelected);
+      if (note) {
+        setNewNote(note);
+      }
+    }
+  }, [idSelected]);
 
   const getAllNotes = async () => {
     axios.get('http://localhost:8080/api/v1/notes')
@@ -32,7 +43,6 @@ const Note = () => {
         } else {
           console.error('La respuesta de la API no es un array');
         }
-        //console.log(response.data.data.notes);
       })
       .catch((error) => {
         console.error('Error al obtener las notas:',  error.response.data.message);
@@ -43,57 +53,30 @@ const Note = () => {
   const handleDelete = async (id: number) => {
 
     await axios.delete(`http://localhost:8080/api/v1/notes/${id}`);
-
-    
     setNotes((prevNotes) =>
       prevNotes.filter((note) => note.id !== id)
     );
   };
 
-  const handleEdit = (id: number) => {
-    console.log(id);
-
-    const note = notes.find((note) => note.id === id);
-
-    console.log(note);
-
-    if (note) {
-      setNewNote({
-        title: note.title,
-        body: note.body,
-        date: new Date(note.date as Date).toLocaleDateString(),
-      });
-    }
-
-    axios.put(`http://localhost:8080/api/v1/notes/${id}`, {
-      title: newNote.title,
-      body: newNote.body,
-      date: newNote.date,
-    });
-
-
-
-
-  };
-
 
   const handleCreate = async () => {
-    try {
-      const response = await axios.post('http://localhost:8080/api/v1/notes', {
-        title: newNote.title,
-        body: newNote.body,
-        date: newNote.date,
-      });
-      console.log(response.data);
-      if (response.status === 201) {
-        setNotes((prevNotes) => [...prevNotes, {"body":response.data.body,"id":response.data.id,"title":response.data.title}]);
-      } else {
-        console.error('Error al crear la nota:', response);
-      }
-    } catch (error) {
-      console.error('Error de red al crear la nota:', error);
+    let response;
+    if (newNote.id){
+      response = await axios.put(`http://localhost:8080/api/v1/notes/${newNote.id}`, newNote);
+    }else{
+      response = await axios.post('http://localhost:8080/api/v1/notes', newNote);
     }
-  };
+    
+    setNewNote({
+      id: null,
+      title: '',
+      body: '',
+      date: '',
+    })
+
+    if (response.status === 201 || response.status === 200) {
+      setNotes(response.data.data.note);
+  }};
   
 
   return (
@@ -115,9 +98,9 @@ const Note = () => {
               <td>{note.id}</td>
               <td>{note.title}</td>
               <td>{note.body}</td>
-              <td>{new Date(note.date as Date).toLocaleDateString()}</td>
+              <td>{note.date}</td>
               <td>
-                <button onClick={() => handleEdit(note.id)}>Editar</button>
+                <button onClick={() => setIdSelected(note.id)}>Editar</button>
                 <button onClick={() => handleDelete(note.id)}>Eliminar</button>
               </td>
             </tr>
@@ -137,8 +120,9 @@ const Note = () => {
           onChange={(e) => setNewNote({ ...newNote, body: e.target.value })}
         />
         <input
-          type="date"
+          type="text"
           value={newNote.date}
+          placeholder='yyyy-mm-dd'
           onChange={(e) => setNewNote({ ...newNote, date: e.target.value })}
         />
         <button onClick={handleCreate}>Crear Nota</button>
