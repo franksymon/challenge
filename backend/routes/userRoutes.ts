@@ -116,13 +116,15 @@ router.delete("/:id", deleteUser);
  *          schema:
  *            type: object
  *            properties:
- *              title:
+ *              firstName:
  *                type: string
- *              author:
+ *              lastName:
  *                type: string
- *              finished:
- *                type: boolean
- *              createdAt:
+ *              usuario:
+ *                type: string
+ *              email:
+ *                type: string
+ *              password:
  *                type: string
  *    responses:
  *      200:
