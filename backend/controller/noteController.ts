@@ -11,9 +11,7 @@ import { Op } from 'sequelize';
 
 
 export const getAllNotes = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const notes = await Note.findAll({
-      attributes: ['id', 'title', 'body'],
-    });
+    const notes = await Note.findAll({});
 
     res.status(GlobalEnumStatus.OK).json({
       status: 'success',

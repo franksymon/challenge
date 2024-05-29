@@ -16,7 +16,7 @@ export const router = express.Router();
 
 // Routes
 router.post("/login", loginUser);
-router.put("/rest-password",  updatePassword);
+router.put("/rest-password/userid/:userid",  updatePassword);
 
 
 // swagger docs
@@ -51,17 +51,17 @@ router.put("/rest-password",  updatePassword);
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/note'
- * /api/v1/auth/rest-password:
+ * /api/v1/auth/rest-password/userid/{userid}:
  *   put:
  *     summary: Update password by user
  *     tags: [Auth]
  *     parameters:
  *      - in: path
- *        name: id
+ *        name: userid
  *        schema:
- *          type: string
+ *          type: number
  *        required: true
- *        description: The user id
+ *        description: The user userid
  *     requestBody:
  *       required: true
  *       content:
