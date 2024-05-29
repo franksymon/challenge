@@ -12,7 +12,7 @@ import { Op } from 'sequelize';
 
 export const getAllNotes = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const notes = await Note.findAll({});
-
+    
     res.status(GlobalEnumStatus.OK).json({
       status: 'success',
       results: notes.length,
@@ -93,10 +93,11 @@ export const createNote = catchAsync(async (req: Request, res: Response, next: N
       body,
       date,
     });
+    const getAllNote = await Note.findAll({});
     res.status(GlobalEnumStatus.CREATED).json({
       status: 'success',
       data: {
-        note: newNote,
+        note: getAllNote,
       },
     });
   });   
@@ -113,10 +114,12 @@ export const updateNote = catchAsync(async (req: Request, res: Response, next: N
         title,
         body,
       });
+
+      const getAllNote = await Note.findAll({});
       res.status(GlobalEnumStatus.OK).json({
         status: 'success',
         data: {
-          note: updatedNote,
+          note: getAllNote,
         },
       });
     }
